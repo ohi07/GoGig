@@ -446,13 +446,157 @@ Relationships: User 1..* Gigs, Gig 1..* Reviews, Order references Gig and User, 
 }
 ```
 
----
 
-# Final Notes
+## UML Class Diagram
 
-- loading...
+```mermaid
+classDiagram
+direction LR
 
----
+%% =====================
+%%        USER
+%% =====================
+class User {
+  +ObjectId _id
+  +String name
+  +String email
+  +String passwordHash
+  +String role
+  +String bio
+  +String[] skills
+  +String profileImage
+  +ObjectId[] followers
+  +Boolean twoFactorEnabled
+  +Date createdAt
+  +Date updatedAt
+  +signup()
+  +login()
+  +updateProfile()
+  +enable2FA()
+}
 
-*End of document.*
+%% =====================
+%%         GIG
+%% =====================
+class Gig {
+  +ObjectId _id
+  +ObjectId sellerId
+  +String title
+  +String description
+  +String category
+  +String subcategory
+  +String[] images
+  +Number price
+  +Package[] packages
+  +FAQ[] faqs
+  +Number rating
+  +ObjectId[] reviews
+  +Date createdAt
+  +Date updatedAt
+  +createGig()
+  +updateGig()
+  +deleteGig()
+  +addReview()
+}
+
+class Package {
+  +String name
+  +Number price
+  +Number deliveryTime
+  +Number revisions
+}
+
+class FAQ {
+  +String question
+  +String answer
+}
+
+%% =====================
+%%       REVIEW
+%% =====================
+class Review {
+  +ObjectId _id
+  +ObjectId gigId
+  +ObjectId reviewerId
+  +Number rating
+  +String comment
+  +Date createdAt
+}
+
+%% =====================
+%%       ORDER
+%% =====================
+class Order {
+  +ObjectId _id
+  +ObjectId gigId
+  +ObjectId buyerId
+  +ObjectId sellerId
+  +String packageSelected
+  +Number price
+  +String status
+  +String requirements
+  +String[] attachments
+  +String invoiceId
+  +Date createdAt
+  +Date updatedAt
+  +createOrder()
+  +updateStatus()
+  +uploadDelivery()
+  +raiseDispute()
+}
+
+%% =====================
+%%    CHAT MESSAGE
+%% =====================
+class ChatMessage {
+  +ObjectId _id
+  +ObjectId orderId
+  +ObjectId senderId
+  +String text
+  +String[] attachments
+  +Date createdAt
+}
+
+%% =====================
+%%       REPORT
+%% =====================
+class Report {
+  +ObjectId _id
+  +ObjectId reporterId
+  +String targetType
+  +ObjectId targetId
+  +String reason
+  +String status
+  +Date createdAt
+}
+
+%% =====================
+%%       ADMIN
+%% =====================
+class Admin {
+  +banUser()
+  +removeGig()
+  +viewAnalytics()
+}
+
+%% =====================
+%%   RELATIONSHIPS
+%% =====================
+
+User "1" --> "0..*" Gig : creates
+Gig "1" --> "0..*" Review : has
+User "1" --> "0..*" Review : writes
+
+Gig "1" --> "0..*" Order : purchased
+User "1" --> "0..*" Order : buys
+User "1" --> "0..*" Order : sells
+
+Order "1" --> "0..*" ChatMessage : contains
+User "1" --> "0..*" ChatMessage : sends
+
+User "1" --> "0..*" Report : files
+
+
+
+
 
