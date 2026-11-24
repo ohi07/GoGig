@@ -1,0 +1,22 @@
+{
+  "name": "gogig-backend",
+  "version": "1.0.0",
+  "description": "GoGig marketplace and support API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "admin:setup": "node --env-file-if-exists=.env admin.js"
+  },
+  "keywords": [
+    "gogig",
+    "backend"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "stripe": "^23.2.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
